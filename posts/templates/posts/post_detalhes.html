@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-
+{%block titulo%} {{post.titulo_post | title}}{%endblock%}
 {%block conteudo %}
 <!-- POST -->
-<div class="container">
+
     <div class="row pt-5">
         <div class="col-xl"></div>
         <div class="col-xl-8 text-center">
@@ -21,8 +21,10 @@
     <div class="row pt-5">
         <div class="col-xl"></div>
         <div class="col-xl-8">
+
             {%if post.imagem_post%}
-            <img class="img-fluid pb-5 " src="{{post.imagem_post.url}}" alt="{{post.titulo_post.url}}">
+                <img class="img-fluid" src="{{post.imagem_post.url}}" alt="{{post.titulo_post.url}}">
+
             {%endif%}
 
             {{ post.conteudo_post|safe }}
@@ -55,22 +57,30 @@
 
             <form method="POST" action="#envia_comentario">
                 {% csrf_token %}
-                <table class="table">
-                    {{form}}
-                    <td colspan="2">
-                        {%include 'parciais/_messages.html'%}
-                        <input id="envia_comentario" type="submit" class="btn btn-primary"
-                               value="Enviar">
-                    </td>
-                    </tr>
-                </table>
+                {%for hidden_field in form.hidden_fields %}
+                    {{ hidden_field }}
+                {%endfor%}
+
+                {% csrf_token %}
+                {%for visible_field in form.visible_fields %}
+                <div class ="form-group">
+                    {{ visible_field.errors}}
+                    {{visible_field.label_tag}} <br>
+                    {{ visible_field }}
+                </div>
+
+
+                {%endfor%}
+                {%include 'parciais/_messages.html'%}
+                <input id="envia_comentario" type="submit" class="btn btn-primary" value="Enviar">
+
             </form>
 
 
         </div>
         <div class="col-xl"></div>
     </div>
-</div>
+
 <!-- POST -->
 
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import Comentario
-
+from django.forms.widgets import TextInput, EmailInput, Textarea
 
 class FormComentario(ModelForm):
     def clean(self):
@@ -20,4 +20,18 @@ class FormComentario(ModelForm):
         model = Comentario
         fields = ('nome_comentario','email_comentario','comentario',)
 
-
+        widgets = {
+            'nome_comentario': TextInput(attrs={
+                'placeholder': 'Digite seu nome',
+                'class': 'form-control',
+            }),
+            'email_comentario': EmailInput(attrs={
+                'placeholder': 'Digite seu e-mail',
+                'class': 'form-control',
+            }),
+            'comentario': Textarea(attrs={
+                'placeholder': 'Digite seu cometário',
+                'class': 'form-control',
+                # 'rows': 5,
+            }),
+        }
